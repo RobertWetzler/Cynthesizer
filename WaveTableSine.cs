@@ -17,7 +17,7 @@ namespace Cynthesizer
         private double phaseStepDelta;
         private bool seekFreq;
 
-        public SineWaveProvider(int sampleRate = 44100)
+        public SineWaveProvider(int sampleRate = 44100, double frequency = 1000f, double portamentoTime = 0.5)
         {
             WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, 1);
             waveTable = new float[sampleRate];
@@ -28,9 +28,8 @@ namespace Cynthesizer
                 // For sawtooth instead of sine: waveTable[index] = (float)index / sampleRate;
             Frequency = 1000f;
             Volume = 0.25f;
-            PortamentoTime = 0.2; // thought this was in seconds, but glide seems to take a bit longer
+            PortamentoTime = 0.5; // thought this was in seconds, but glide seems to take a bit longer
         }
-
         public double PortamentoTime { get; set; }
 
         public double Frequency
@@ -41,8 +40,8 @@ namespace Cynthesizer
             }
             set
             {
+                seekFreq = value != frequency;
                 frequency = value;
-                seekFreq = true;
             }
         }
 
